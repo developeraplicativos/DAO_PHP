@@ -14,8 +14,10 @@ require_once('config.php');
 //$rua = $sql-> select("SELECT * FROM tb_usuarios");
 //echo json_encode($rua);
 //
-  $us = new usuario();
-  $us->loadUsuarioById(2);
+  $us = new usuario("alcatra", "carnedesegunda");
+//  $us -> setDesclogin("Logan");
+//  $us -> setDescsenha("AmaFilhaDoUrso");
+  $us -> insert();
   echo $us;
 //  $procura = new usuario();
 //  $parada = $procura -> procurar("ped");

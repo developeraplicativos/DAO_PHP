@@ -39,12 +39,7 @@
         if(isset($resultado[0])){
   //        $row = $resultado[0];
 
-          $this-> setData( $resultado[0]);/*
-          $this->setIdusuario($row['idusuario']);
-          $this->setDesclogin($row['desclogin']);
-          $this->setDescsenha($row['descsenha']);
-          $this->setDatacadastro(new DateTime($row['datacadastro']));
-*/
+          $this-> setData( $resultado[0]);
         }
 
       }
@@ -74,16 +69,12 @@
       //    print_r($resultado);
       //      $row = $resultado[0];
             $this-> setData( $resultado[0]);
-/*
-            $this->setIdusuario($row['idusuario']);
-            $this->setDesclogin($row['desclogin']);
-            $this->setDescsenha($row['descsenha']);
-            $this->setDatacadastro(new DateTime($row['datacadastro']));
-*/
+
         }else{
           throw new Exception("    --->  usuario ou senha errada  <---     ");
         }
       }
+      //inclusão do codigo p evitar redundancia
       public function setData($data){
 
         $this->setIdusuario($data['idusuario']);
@@ -91,8 +82,20 @@
         $this->setDescsenha($data['descsenha']);
         $this->setDatacadastro(new DateTime($data['datacadastro']));
       }
+      //adiciona um login e senha
       public function insert(){
-
+        $mysql = new banco02();
+        $resultado = $mysql -> select("CALL sp_usuarios_insert (:LOGIN,:SENHA)",array(
+          ':LOGIN'=> $this->getDesclogin(),
+          ':SENHA'=> $this->getDescsenha()
+        ));
+        if(count($resultado)>0){
+          $this->setData($resultado[0]);
+        }
+      }
+      public function __construct($login="",$senha=""){
+        $this->setDesclogin($login);
+        $this->setDescsenha($senha);
       }
       //imprimi usuario apos loadUsuarioById atraves de um echo no usuario
       public function __toString(){
