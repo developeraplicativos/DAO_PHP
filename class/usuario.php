@@ -35,7 +35,9 @@
     //seleciona um usuario com id especifico
     public function loadUsuarioById($id){
       $mysql = new banco02();
-      $resultado = $mysql->select("SELECT * FROM tb_usuarios WHERE idusuario = 2 " ); // ALTERADO
+      $resultado = $mysql->select("SELECT * FROM tb_usuarios WHERE idusuario = :ID ", array(
+        ":ID"=> $id
+      )); // ALTERADO
         if(isset($resultado[0])){
   //        $row = $resultado[0];
 
@@ -80,6 +82,7 @@
         $this->setIdusuario($data['idusuario']);
         $this->setDesclogin($data['desclogin']);
         $this->setDescsenha($data['descsenha']);
+        //$this->setDatacadastro(new DateTime($data['datacadastro']));
         $this->setDatacadastro(new DateTime($data['datacadastro']));
       }
       //adiciona um login e senha
@@ -93,9 +96,24 @@
           $this->setData($resultado[0]);
         }
       }
+      //novo usuario já com parametros
       public function __construct($login="",$senha=""){
         $this->setDesclogin($login);
         $this->setDescsenha($senha);
+      }
+      //alterar o usuario no DB
+      public function update($login, $senha){
+        $this ->setDescsenha($senha);
+        $this-> setDesclogin($login);
+
+        $usuario = new banco02();
+        $usuario->query("UPDATE tb_usuarios SET desclogin=:LOGIN and descsenha=:SENHA where idusuario=:ID", ARRAY(
+          ":LOGIN"=>$this->getDesclogin(),
+          ":SENHA"=>$this->getDescsenha(),
+          ":ID"=>$this->getIdusuario()
+        ));
+
+
       }
       //imprimi usuario apos loadUsuarioById atraves de um echo no usuario
       public function __toString(){
@@ -103,7 +121,7 @@
             $this->getIdusuario(),
             $this->getDesclogin(),
             $this->getDescsenha(),
-            $this->getDatacadastro()->format("d/m/s H:i:s")
+            $this->getDatacadastro()->format("d-m-y H:i:s")
         ));
 
       }
