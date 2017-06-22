@@ -15,7 +15,7 @@ require_once('config.php');
 //echo json_encode($rua);
 //
   $us = new usuario();
-  $us->login("claudio","quatro4");
+  $us->loadUsuarioById(2);
   echo $us;
 //  $procura = new usuario();
 //  $parada = $procura -> procurar("ped");

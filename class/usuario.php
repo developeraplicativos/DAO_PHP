@@ -37,13 +37,14 @@
       $mysql = new banco02();
       $resultado = $mysql->select("SELECT * FROM tb_usuarios WHERE idusuario = 2 " ); // ALTERADO
         if(isset($resultado[0])){
-          $row = $resultado[0];
+  //        $row = $resultado[0];
 
+          $this-> setData( $resultado[0]);/*
           $this->setIdusuario($row['idusuario']);
           $this->setDesclogin($row['desclogin']);
           $this->setDescsenha($row['descsenha']);
           $this->setDatacadastro(new DateTime($row['datacadastro']));
-
+*/
         }
 
       }
@@ -61,6 +62,7 @@
           ':BUSCA'=> "%".$valor."%"
         ));
       }
+      //verifica login e senha do usuario
       public function login($login,$senha){
         $mysql = new banco02();
         $resultado = $mysql-> select("SELECT * FROM tb_usuarios WHERE desclogin= :LOGIN AND descsenha= :SENHA", array(
@@ -70,18 +72,28 @@
         print_r($resultado);
         if(count($resultado)>0){
       //    print_r($resultado);
-            $row = $resultado[0];
-
+      //      $row = $resultado[0];
+            $this-> setData( $resultado[0]);
+/*
             $this->setIdusuario($row['idusuario']);
             $this->setDesclogin($row['desclogin']);
             $this->setDescsenha($row['descsenha']);
             $this->setDatacadastro(new DateTime($row['datacadastro']));
-
+*/
         }else{
           throw new Exception("    --->  usuario ou senha errada  <---     ");
         }
       }
+      public function setData($data){
 
+        $this->setIdusuario($data['idusuario']);
+        $this->setDesclogin($data['desclogin']);
+        $this->setDescsenha($data['descsenha']);
+        $this->setDatacadastro(new DateTime($data['datacadastro']));
+      }
+      public function insert(){
+
+      }
       //imprimi usuario apos loadUsuarioById atraves de um echo no usuario
       public function __toString(){
         return json_encode(array(
