@@ -15,7 +15,6 @@ class banco02{
 
   public function query($selecao,$parametros= array()){
     $quer = $this->conn->prepare($selecao);
-    //$this -> setParams($quer);
     $this -> setParams($quer,$parametros);
     $quer -> execute();
     return $quer;

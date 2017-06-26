@@ -115,6 +115,17 @@
 
 
       }
+      //deleta usuario pelo id
+      public function delete(){
+        $usuario = new banco02();
+        $usuario->query("DELETE FROM tb_usuarios WHERE idusuario = :ID", array(
+          ":ID"=> $this->getIdusuario()
+        ));
+        $this->setIdusuario(0);
+        $this->setDesclogin("");
+        $this->setDescsenha("");
+        $this->setDatacadastro(new DateTime());
+      }
       //imprimi usuario apos loadUsuarioById atraves de um echo no usuario
       public function __toString(){
         return json_encode(array(
